@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'pages/shelf/shelfPage.dart';
+// import 'package:flutter/widgets.dart';
+import 'pages/shelf.dart';
 import 'model/book_manager.dart';
+import 'pages/reading.dart';
 void main(){
   return runApp(
     MultiProvider(
@@ -20,6 +22,9 @@ class MyApp extends StatelessWidget {
     return CupertinoApp(
       title: '咕噜阅读器',
       home: HomePage(),
+      routes: <String, WidgetBuilder>{
+        "/reading": (context) => ReadingPage(ModalRoute.of(context).settings.arguments)
+      },
     );
   }
 }

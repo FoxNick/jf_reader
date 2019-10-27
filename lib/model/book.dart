@@ -7,17 +7,20 @@ class Book {
   String url;
   String bookID;
   String cover;
-  int latestChapter;
+  String latestChapterID;
   String latestChapterName;
-  int currentChapter;
+  String currentChapterID;
   String currentChapterName;
+  List<ChapterModel> chapters;
   factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
   Map<String, dynamic> toJson() => _$BookToJson(this);
 }
-
+@JsonSerializable()
 class  ChapterModel {
+  ChapterModel();
   String bookID;
   String name;
-  String content;
-  int index;
+  String chapterID;
+  factory ChapterModel.fromJson(Map<String, dynamic> json) => _$ChapterModelFromJson(json);
+  Map<String, dynamic> toJson() => _$ChapterModelToJson(this);
 }
