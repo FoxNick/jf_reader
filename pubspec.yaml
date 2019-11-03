@@ -29,6 +29,10 @@ dependencies:
   cached_network_image: ^1.1.2+1
   fast_gbk: ^0.1.1+1
   uuid: ^2.0.2
+  intl: ^0.16.0
+  device_info: ^0.4.1+1
+  battery: ^0.3.1+2
+
 
 dev_dependencies:
   flutter_test:

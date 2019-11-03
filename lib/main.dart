@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 // import 'package:flutter/widgets.dart';
 import 'pages/shelf.dart';
 import 'model/book_manager.dart';
-import 'pages/reading.dart';
+import 'pages/read/read_page.dart';
 void main(){
   return runApp(
     MultiProvider(

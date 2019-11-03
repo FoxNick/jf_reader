@@ -33,17 +33,3 @@ Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'currentChapterName': instance.currentChapterName,
       'chapters': instance.chapters,
     };
-
-ChapterModel _$ChapterModelFromJson(Map<String, dynamic> json) {
-  return ChapterModel()
-    ..bookID = json['bookID'] as String
-    ..name = json['name'] as String
-    ..chapterID = json['chapterID'] as String;
-}
-
-Map<String, dynamic> _$ChapterModelToJson(ChapterModel instance) =>
-    <String, dynamic>{
-      'bookID': instance.bookID,
-      'name': instance.name,
-      'chapterID': instance.chapterID,
-    };

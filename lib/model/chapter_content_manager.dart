@@ -10,8 +10,6 @@ class ChapterContentManager with ChangeNotifier {
   static ChapterContentManager get instance => _getInstance();
   static ChapterContentManager _instance;
 
-  // <bookid_chapter_id,content>
-  MapCache<String,String> chaptersCache = MapCache.lru(maximumSize:50);
   ChapterContentManager._internal() {
     // 初始化
   }
@@ -22,13 +20,16 @@ class ChapterContentManager with ChangeNotifier {
     return _instance;
   }
 
-  saveChapterContent({String bookID,String chapterID,String content}) {
+  // <bookid_chapter_id,content>
+  MapCache<String,String> chaptersCache = MapCache.lru(maximumSize:50);
+  saveChapterContent(String bookID,String chapterID,String content) {
     chaptersCache.set("$bookID\_$chapterID", content);
     () async {
       await checkBookDir(bookID);
       String dir = (await getApplicationDocumentsDirectory()).path;
       File chapterFile = new File('$dir/$bookID/$chapterID');
-      await chapterFile.writeAsString(content);
+      File result = await chapterFile.writeAsString(content);
+      print(result);
     }();
   }
 
@@ -41,11 +42,11 @@ class ChapterContentManager with ChangeNotifier {
       await directory.create();
     }
   }
-  readChapterContent(String bookID,int chapterID) async {
+  readChapterContent(String bookID,String chapterID) async {
     String content = await chaptersCache.get("$bookID\_$chapterID",ifAbsent: (key) async {
       String dir = (await getApplicationDocumentsDirectory()).path;
       try {
-        File chapterFile = new File('$dir/$bookID/$key');
+        File chapterFile = new File('$dir/$bookID/$chapterID');
         String contents = await chapterFile.readAsString();
         return contents;
       } catch (e) {
