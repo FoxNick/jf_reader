@@ -8,3 +8,10 @@ model代码生成：
 ```bash
 flutter packages pub run build_runner build
 ```
+
+### roadmap
+* 从下载链接导入小说，支持TXT/zip
+* 搜索小说并导入，支持至少一种来源
+* 查看目录功能
+* 上一章/下一章功能
+* 设置 - 字体
