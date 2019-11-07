@@ -52,12 +52,16 @@ class ReadMenu extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                    width: 44,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: () {
                         Navigator.of(context,rootNavigator: true).pop(context);
                       },
-                      child: Icon(CupertinoIcons.back),
+                      child: Container(
+                        width: 44,
+                        height: Screen.navigationBarHeight,
+                        child: Icon(CupertinoIcons.back),
+                      )
                     ),
                   ),
                   Expanded(child: Container()),
@@ -101,7 +105,7 @@ class ReadMenu extends StatelessWidget {
 
                         }),
                         BottomItem('设置', 'res/read_icon_setting.png',(){
-                          
+
                         }),
                       ],
                     )
