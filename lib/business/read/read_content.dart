@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jf_reader/tools/screen.dart';
 import 'package:provider/provider.dart';
-import 'package:jf_reader/model/chapter.dart';
+import 'package:jf_reader/base/chapter/chapter.dart';
 import './read_page_state.dart';
 import './battery_view.dart';
 import 'package:intl/intl.dart';

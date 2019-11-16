@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart' as prefix0;
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../model/book_manager.dart';
-import '../model/book.dart';
+import '../base/book/book_manager.dart';
+import '../base/book/book.dart';
 class ShelfPage extends StatelessWidget {
   const ShelfPage({Key key}) : super(key: key);
 
@@ -30,7 +30,8 @@ class ShelfPage extends StatelessWidget {
                   CupertinoActionSheetAction(
                     child: const Text('导入'),
                     onPressed: () {
-                      Navigator.pop(context, 'Profiteroles');
+                      // Navigator.pop(context, 'Profiteroles');
+                      Navigator.of(context,rootNavigator: true).pushNamed('/import');
                     },
                   ),
                   CupertinoActionSheetAction(
@@ -49,6 +50,16 @@ class ShelfPage extends StatelessWidget {
       child: SafeArea(
         child: bookListView(manager.bookList)
       ),
+    );
+  }
+  Widget noCoverWidget(){
+    return Container(
+      width:80,
+      height:100,
+      child:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:<Widget>[Text('暂无封面')]
+      )
     );
   }
   Widget bookListView(List<Book> bookList){
@@ -77,17 +88,17 @@ class ShelfPage extends StatelessWidget {
             height: 100.0,
             child: Row(
               children: <Widget>[
-                ClipRRect(
+                (book.cover != null && book.cover.length > 0) ? ClipRRect(
                   borderRadius: BorderRadius.circular(2.0),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: book.cover,
+                    imageUrl:  book.cover,
                     width: 80,
                     height: 100,
-                    placeholder: (context, url) => CupertinoActivityIndicator(),
-                    errorWidget: (context, url, error) => Text('加载失败'),
+                    placeholder: (context, url) => noCoverWidget(),
+                    errorWidget: (context, url, error) => noCoverWidget(),
                   ),
-                ),
+                ) : noCoverWidget(),
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(left: 20),

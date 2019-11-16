@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter/widgets.dart';
-import 'pages/shelf.dart';
-import 'model/book_manager.dart';
-import 'pages/read/read_page.dart';
+import 'business/shelf.dart';
+import 'base/book/book_manager.dart';
+import 'business/read/read_page.dart';
+import 'business/import/import_page.dart';
 void main(){
   return runApp(
     MultiProvider(
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       title: '咕噜阅读器',
       home: HomePage(),
       routes: <String, WidgetBuilder>{
-        "/reading": (context) => ReadingPage(ModalRoute.of(context).settings.arguments)
+        "/reading": (context) => ReadingPage(ModalRoute.of(context).settings.arguments),
+        "/import": (context) => ImportPage(),
       },
     );
   }

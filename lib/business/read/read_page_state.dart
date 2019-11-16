@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:jf_reader/model/chapter.dart';
-import 'package:jf_reader/model/book.dart';
-import 'package:jf_reader/model/book_manager.dart';
+import 'package:jf_reader/base/chapter/chapter.dart';
+import 'package:jf_reader/base/book/book.dart';
+import 'package:jf_reader/base/book/book_manager.dart';
 import 'package:jf_reader/tools/screen.dart';
 import 'package:flutter/animation.dart';
 import 'dart:developer';

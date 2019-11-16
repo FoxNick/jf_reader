@@ -7,6 +7,10 @@ class FileParser {
 
   static parseWithLocalFile (String filePath) async {
     final ByteData data = await rootBundle.load(filePath);
+    var bookModel = await parseWithData(data);
+    return bookModel;
+  }
+  static parseWithData (ByteData data) async {
     String content = await compute(decodeLogic, data);
     var bookModel = await parseWithContent(content);
     return bookModel;

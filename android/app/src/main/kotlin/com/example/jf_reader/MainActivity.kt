@@ -1,4 +1,4 @@
-package com.example.jf_reader
+package com.javanli.jf_reader
 
 import android.os.Bundle
 
