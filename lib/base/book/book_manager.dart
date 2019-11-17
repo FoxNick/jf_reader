@@ -26,12 +26,21 @@ class BookShelfManager with ChangeNotifier {
 
   List<Book> bookList = [];
   SharedPreferences _prefs;
+  // 深拷贝
   getBook(String bookID){
     int idx = bookList.indexWhere((Book book) => book.bookID == bookID);
+    Book localBook;
     if (idx >= 0) {
-      return bookList[idx];
+      localBook = bookList[idx];
+      return Book.fromJson(jsonDecode(jsonEncode(localBook)));
     }
     return null;
+  }
+  updateBook(String bookID,Book book){
+    int idx = bookList.indexWhere((Book book) => book.bookID == bookID);
+    if (idx >= 0 && book != null) {
+      bookList[idx] = book;
+    }
   }
   addBook(Book book) {
     bookList.add(book);

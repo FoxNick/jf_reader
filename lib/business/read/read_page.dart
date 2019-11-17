@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import './read_page_state.dart';
 import './read_content.dart';
 import './read_menu.dart';
+import './chapter_list_view.dart';
 
 class ReadingPage extends StatelessWidget {
   static const String route = '/reading';
@@ -33,7 +34,8 @@ class ReadingPage extends StatelessWidget {
           children: <Widget>[
             Positioned(left: 0, top: 0, right: 0, bottom: 0, child: Image.asset('res/read_bg.png', fit: BoxFit.cover)),
             ReadContentView(),
-            ReadMenu()
+            ReadMenu(),
+            ChapterListView()
           ],
         ),
       ),

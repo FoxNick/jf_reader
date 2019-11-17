@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:jf_reader/base/chapter/chapter.dart';
-import 'package:jf_reader/base/book/book.dart';
-import 'package:jf_reader/base/book/book_manager.dart';
+import 'package:jf_reader/base/base.dart';
 import 'package:jf_reader/tools/screen.dart';
 import 'package:flutter/animation.dart';
 import 'dart:developer';
@@ -20,11 +18,17 @@ class ReadPageState with ChangeNotifier {
 
   bool isLoading = true;
   bool showMenu = false;
+  bool showChapters = false;
   PageController pageController = PageController(keepPage: false);
 
   String bookID;
   String chapterID;
   String currentContent;
+  Book get currentBook {
+    Book book = BookShelfManager().getBook(bookID);
+    return book;
+  }
+
   ChapterModel currentChapter;
   List<ContentOffset> currentPageOffsets;
 
@@ -41,7 +45,7 @@ class ReadPageState with ChangeNotifier {
     topSafeHeight = Screen.topSafeHeight;
     bottomSafeHeight = Screen.bottomSafeHeight;
     await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    await loadCurrentChapter();
+    await gotoChapter(chapterID);
     var state = Navigator.of(context);
     animationController = AnimationController(
         duration: const Duration(milliseconds: 200), vsync: state);
@@ -49,10 +53,10 @@ class ReadPageState with ChangeNotifier {
     animation.addListener(() {
       notifyListeners();
     });
-    animation.addStatusListener((status){
+    animation.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
-          showMenu = false;
-          notifyListeners();
+        showMenu = false;
+        notifyListeners();
       }
     });
     pageController.addListener(onScroll);
@@ -76,16 +80,23 @@ class ReadPageState with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+    if (book.currentChapterID != chapterID) {
+      book.currentChapterID = chapterID;
+      book.currentChapterName = currentChapter.name;
+      BookShelfManager().updateBook(bookID, book);
+    }
   }
 
   ChapterModel get nextChapter {
     Book book = BookShelfManager().getBook(bookID);
     return book.nextChapter(chapterID);
   }
+
   ChapterModel get previousChapter {
     Book book = BookShelfManager().getBook(bookID);
     return book.previousChapter(chapterID);
   }
+
   // 页面点击
   onTap(TapUpDetails details) {
     Offset position = details.globalPosition;
@@ -102,12 +113,20 @@ class ReadPageState with ChangeNotifier {
       showMenu = true;
       notifyListeners();
     } else if (xRate >= 0.7) {
-      pageController.nextPage(duration: Duration(milliseconds: 250), curve: Curves.easeOut);
+      pageController.nextPage(
+          duration: Duration(milliseconds: 250), curve: Curves.easeOut);
     } else {
-      pageController.previousPage(duration: Duration(milliseconds: 250), curve: Curves.easeOut);
+      pageController.previousPage(
+          duration: Duration(milliseconds: 250), curve: Curves.easeOut);
     }
   }
-  onScroll(){
+
+  setChapterListShow(bool isShow) {
+    showChapters = isShow;
+    notifyListeners();
+  }
+
+  onScroll() {
     // TODO: cache pre/next/pages, or throttle it
     double page = pageController.page;
     ChapterModel pre = this.previousChapter;
@@ -121,15 +140,17 @@ class ReadPageState with ChangeNotifier {
     }
     if (pre != null && page <= 0) {
       log('上一章');
-      gotoChapter(pre.chapterID,istail: true);
+      gotoChapter(pre.chapterID, istail: true);
     } else if (page >= pages - 1 && next != null) {
       log('下一章');
-      gotoChapter(next.chapterID,istail: false);
+      gotoChapter(next.chapterID, istail: false);
     }
   }
-  gotoChapter(String chapterID,{istail:true}) async{
+
+  gotoChapter(String chapterID, {istail: false}) async {
     this.chapterID = chapterID;
     await loadCurrentChapter();
+    notifyListeners();
     int page = 0;
     if (istail) {
       page = this.currentPageOffsets.length - 1;
@@ -137,7 +158,11 @@ class ReadPageState with ChangeNotifier {
     if (this.previousChapter != null) {
       page += 1;
     }
-    this.pageController.jumpToPage(page);
-    notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pageController.hasClients) {
+        this.pageController.jumpToPage(page);
+        notifyListeners();
+      }
+    });
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart' as prefix0;
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import '../base/book/book_manager.dart';
-import '../base/book/book.dart';
+import '../base/base.dart';
 class ShelfPage extends StatelessWidget {
   const ShelfPage({Key key}) : super(key: key);
 
@@ -13,6 +11,7 @@ class ShelfPage extends StatelessWidget {
     BookShelfManager manager = Provider.of<BookShelfManager>(context);
     final GlobalKey barKey = GlobalKey();
     return CupertinoPageScaffold(
+      backgroundColor: CupertinoColors.white,
       navigationBar: CupertinoNavigationBar(
         // key: barKey,
         middle: Text('我的书架'),
@@ -28,7 +27,7 @@ class ShelfPage extends StatelessWidget {
                 message: const Text('选择一种添加方式'),
                 actions: <Widget>[
                   CupertinoActionSheetAction(
-                    child: const Text('导入'),
+                    child: const Text('从TXT下载链接导入'),
                     onPressed: () {
                       // Navigator.pop(context, 'Profiteroles');
                       Navigator.of(context,rootNavigator: true).pushNamed('/import');
@@ -107,8 +106,8 @@ class ShelfPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(book.bookName),
-                        Text('已读到： ${book.currentChapterName}'),
-                        Text('最新： ${book.latestChapterName}')
+                        Text('已读到： ${book.currentChapterName}',style: TextStyle(fontSize: 14, color:Global.subtitleGrayColor),overflow: TextOverflow.ellipsis),
+                        Text('最新： ${book.latestChapterName}',style: TextStyle(fontSize: 14, color:Global.subtitleGrayColor),overflow: TextOverflow.ellipsis,)
                       ],
                     ),
                   ),

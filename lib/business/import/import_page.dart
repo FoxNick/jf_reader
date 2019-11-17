@@ -36,11 +36,24 @@ class ImportPageContent extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: <Widget>[
-          CupertinoTextField(
-            onChanged: (content) {
-              state.currentContent = content;
-            },
-          ),
+          Container(height: 60),
+          Container(
+            height: 40,
+              color: CupertinoColors.white,
+              child: Row(
+                children: <Widget>[
+                  Container(width: 20),
+                  Text('链接：'),
+                  Expanded(
+                      child: CupertinoTextField(
+                        placeholder: '请输入链接，支持zip和txt',
+                        onChanged: (content) {
+                          state.currentContent = content;
+                        },
+                      ),
+                      flex: 1),
+                ],
+              )),
           CupertinoButton(
             child: Text("确认"),
             onPressed: () {
