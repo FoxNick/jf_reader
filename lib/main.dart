@@ -5,6 +5,7 @@ import 'business/shelf.dart';
 import 'base/base.dart';
 import 'business/read/read_page.dart';
 import 'business/import/import_page.dart';
+import 'business/rank/rank_page.dart';
 
 void main() {
   return runApp(MultiProvider(
@@ -62,7 +63,8 @@ class HomePage extends StatelessWidget {
               switch (index) {
                 case 0:
                   return ShelfPage();
-                  break;
+                case 1:
+                  return RankPage();
                 default:
                   return ShelfPage();
               }

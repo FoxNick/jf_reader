@@ -1,9 +1,6 @@
 // 导入小说页
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:jf_reader/tools/screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 import './import_page_state.dart';
 
 class ImportPage extends StatelessWidget {
