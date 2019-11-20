@@ -21,6 +21,8 @@ class RankPage extends StatelessWidget {
                   child: Icon(CupertinoIcons.search),
                   onPressed: () {
                     // Navigator.of(context, rootNavigator: true).pop(context);
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed('/search');
                   })),
           child: RankPageContent()),
     );

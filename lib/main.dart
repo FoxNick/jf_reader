@@ -6,6 +6,7 @@ import 'base/base.dart';
 import 'business/read/read_page.dart';
 import 'business/import/import_page.dart';
 import 'business/rank/rank_page.dart';
+import 'business/search/search_page.dart';
 
 void main() {
   return runApp(MultiProvider(
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         "/reading": (context) =>
             ReadingPage(ModalRoute.of(context).settings.arguments),
         "/import": (context) => ImportPage(),
+        "/search": (context) => SearchPage()
       },
     );
   }

@@ -43,6 +43,7 @@ class ImportPageContent extends StatelessWidget {
                   Text('链接：'),
                   Expanded(
                       child: CupertinoTextField(
+                        autofocus: true,
                         placeholder: '请输入链接，支持zip和txt',
                         onChanged: (content) {
                           state.currentContent = content;
