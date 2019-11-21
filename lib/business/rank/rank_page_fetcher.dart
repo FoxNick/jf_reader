@@ -3,16 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:fast_gbk/fast_gbk.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart';
-
-String gbkDecoder(List<int> responseBytes, RequestOptions options,
-    ResponseBody responseBody) {
-  String result = gbk.decode(responseBytes);
-  return result;
-}
+import 'package:jf_reader/tools/decoder.dart';
 
 Future<RankPageModel> fetchRankPage() async {
   var url = 'http://top.baidu.com/category?c=10&fr=topindex';
-  Response rs = await Dio(BaseOptions(responseDecoder: gbkDecoder)).get(url,
+  Response rs = await Dio(BaseOptions(responseDecoder: gbkResponseDecoder)).get(
+      url,
       options: Options(responseType: ResponseType.plain), //设置接收类型为bytes
       onReceiveProgress: (received, total) {
     print('$received / $total');
@@ -49,7 +45,8 @@ RankPageModel decodeRankPageHtml(String html) {
         // if (descElement != null) {
         //   bookModel.desc = descElement.innerHtml;
         // }
-        var hotElement = bookElement.querySelector('.icon-rise,.icon-fall,.icon-fair');
+        var hotElement =
+            bookElement.querySelector('.icon-rise,.icon-fall,.icon-fair');
         if (hotElement != null) {
           bookModel.hot = hotElement.innerHtml;
         }

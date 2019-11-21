@@ -1,10 +1,11 @@
-[
-    {
+{
+    "www.xbiquge.cc" : {
         "rootURL":"https://www.xbiquge.cc/",
         "search":{
             "url":"https://www.xbiquge.cc/modules/article/search.php?searchkey=#bookname#",
             "encodeType":"gbk",
-            "resuleElements":"#main .novelslists li",
+            "decodeType":"gbk",
+            "resultElements":"#main .novelslistss li",
             "elementParse":{
                 "name": {
                     "selector": ".s2 a",
@@ -15,7 +16,7 @@
                     "type": "inner"
                 },
                 "author": {
-                    "selector":".s4 a",
+                    "selector":".s4",
                     "type": "inner"
                 },
                 "catalogUrl": {
@@ -25,7 +26,7 @@
                 }
             },
             "notFound":{
-                "resuleElements":"body",
+                "resultElements":"body",
                 "elementParse":{
                     "name": {
                         "selector": "#info h1",
@@ -53,4 +54,4 @@
             "contentElement":"#content"
         }
     }
-]
+}
