@@ -6,3 +6,5 @@ export './download/download_manager.dart';
 export './theme/theme_manager.dart';
 export './theme/theme_model.dart';
 export './global.dart';
+export './config/config_manager.dart';
+export './spider/spider.dart';

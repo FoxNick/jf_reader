@@ -1,9 +1,6 @@
 // 导入小说页
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:jf_reader/tools/screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/services.dart';
 import './import_page_state.dart';
 
 class ImportPage extends StatelessWidget {
@@ -46,6 +43,7 @@ class ImportPageContent extends StatelessWidget {
                   Text('链接：'),
                   Expanded(
                       child: CupertinoTextField(
+                        autofocus: true,
                         placeholder: '请输入链接，支持zip和txt',
                         onChanged: (content) {
                           state.currentContent = content;

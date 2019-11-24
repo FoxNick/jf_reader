@@ -8,7 +8,9 @@ part of 'theme_model.dart';
 
 ThemeModel _$ThemeModelFromJson(Map<String, dynamic> json) {
   return ThemeModel()
-    ..backgroundColor = _colorFromJson(json['backgroundColor'] as String);
+    ..backgroundColor = _colorFromJson(json['backgroundColor'] as String)
+    ..cellBackgroundColor =
+        _colorFromJson(json['cellBackgroundColor'] as String);
 }
 
 Map<String, dynamic> _$ThemeModelToJson(ThemeModel instance) {
@@ -21,5 +23,7 @@ Map<String, dynamic> _$ThemeModelToJson(ThemeModel instance) {
   }
 
   writeNotNull('backgroundColor', _colorToJson(instance.backgroundColor));
+  writeNotNull(
+      'cellBackgroundColor', _colorToJson(instance.cellBackgroundColor));
   return val;
 }

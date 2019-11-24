@@ -10,7 +10,8 @@ ChapterModel _$ChapterModelFromJson(Map<String, dynamic> json) {
   return ChapterModel()
     ..bookID = json['bookID'] as String
     ..name = json['name'] as String
-    ..chapterID = json['chapterID'] as String;
+    ..chapterID = json['chapterID'] as String
+    ..chapterUrl = json['chapterUrl'] as String;
 }
 
 Map<String, dynamic> _$ChapterModelToJson(ChapterModel instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$ChapterModelToJson(ChapterModel instance) =>
       'bookID': instance.bookID,
       'name': instance.name,
       'chapterID': instance.chapterID,
+      'chapterUrl': instance.chapterUrl,
     };
