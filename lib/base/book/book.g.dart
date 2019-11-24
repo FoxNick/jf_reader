@@ -14,14 +14,14 @@ Book _$BookFromJson(Map<String, dynamic> json) {
     ..cover = json['cover'] as String
     ..latestChapterID = json['latestChapterID'] as String
     ..latestChapterName = json['latestChapterName'] as String
-    ..currentChapterID = json['currentChapterID'] as String
-    ..currentChapterName = json['currentChapterName'] as String
     ..chapters = (json['chapters'] as List)
         ?.map((e) =>
             e == null ? null : ChapterModel.fromJson(e as Map<String, dynamic>))
         ?.toList()
     ..configKey = json['configKey'] as String
-    ..chaptersURL = json['chaptersURL'] as String;
+    ..chaptersURL = json['chaptersURL'] as String
+    ..currentChapterID = json['currentChapterID'] as String
+    ..currentChapterName = json['currentChapterName'] as String;
 }
 
 Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
@@ -31,11 +31,11 @@ Map<String, dynamic> _$BookToJson(Book instance) => <String, dynamic>{
       'cover': instance.cover,
       'latestChapterID': instance.latestChapterID,
       'latestChapterName': instance.latestChapterName,
-      'currentChapterID': instance.currentChapterID,
-      'currentChapterName': instance.currentChapterName,
       'chapters': instance.chapters,
       'configKey': instance.configKey,
       'chaptersURL': instance.chaptersURL,
+      'currentChapterID': instance.currentChapterID,
+      'currentChapterName': instance.currentChapterName,
     };
 
 T _$enumDecode<T>(

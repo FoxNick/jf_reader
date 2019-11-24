@@ -88,24 +88,7 @@ class BookShelfManager with ChangeNotifier {
     var bookListStr = jsonEncode(bookList);
     _prefs.setString(BOOK_SHELF_KEY, bookListStr);
   }
-  // generateTestData(){
-  //   List<Book> testData = [];
-  //   for (var i = 0; i < 100; i++) {
-  //     Book book = Book()
-  //       ..bookID = Uuid().v4()
-  //       ..bookName = '测试书名$i'
-  //       ..cover = 'https://bookcover.yuewen.com/qdbimg/349573/1015648531/180'
-  //       ..latestChapterID = "$i"
-  //       ..latestChapterName = '测试章节$i'
-  //       ..currentChapterID = "0"
-  //       ..currentChapterName = '测试章节$i';
-  //     testData.add(book);
-  //   }
-  //   bookList = testData;
-  //   notifyListeners();
-  //   saveData();
 
-  // }
   readTestData() async {
     String name = '金瓶梅';
     String path = 'res/$name.txt';
@@ -144,7 +127,7 @@ class BookShelfManager with ChangeNotifier {
       for (Map chapter in chapters) {
         ChapterModel chapterModel = ChapterModel()
           ..name = chapter["chapterName"]
-          ..chapterID = chapter["chapterUrl"]
+          ..chapterID = "${chapter["chapterUrl"].hashCode}"
           ..chapterUrl = chapter["chapterUrl"]
           ..bookID = book.bookID;
         chapterModels.add(chapterModel);

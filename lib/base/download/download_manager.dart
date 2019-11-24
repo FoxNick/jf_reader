@@ -26,12 +26,17 @@ class DownloadManager {
     if (!url.endsWith('zip') && !url.endsWith('txt')) {
       log('url bad:$url');
     }
-    Response<List<int>> rs = await Dio().get<List<int>>(url,
-        options: Options(responseType: ResponseType.bytes), //设置接收类型为bytes
-        onReceiveProgress: (received, total) {
-          print((received / total * 100).toStringAsFixed(0) + "%");
-        }
-    );
+    Response<List<int>> rs;
+    try {
+      rs = await Dio().get<List<int>>(url,
+          options: Options(responseType: ResponseType.bytes), //设置接收类型为bytes
+          onReceiveProgress: (received, total) {
+        print((received / total * 100).toStringAsFixed(0) + "%");
+      });
+    } catch (e) {
+      print('loadFromUrl:$url error:$e');
+      return;
+    }
     String realUrl = rs.realUri.toString();
     var urlHash = realUrl.hashCode;
     var urlFileName = realUrl.split('/').last;
@@ -45,12 +50,11 @@ class DownloadManager {
         if (file.isFile) {
           if (filename.endsWith("txt")) {
             List<int> data = file.content;
-            if(data is Uint8List) {
+            if (data is Uint8List) {
               ByteBuffer buffer = data.buffer;
               ByteData byteData = ByteData.view(buffer);
               addBook(byteData, filename, '$urlHash\_${filename.hashCode}');
-            }
-            else if (data is List<int>) {
+            } else if (data is List<int>) {
               Int32List list = Int32List.fromList(data);
               ByteBuffer buffer = list.buffer;
               ByteData byteData = ByteData.view(buffer);
@@ -68,14 +72,12 @@ class DownloadManager {
       ByteBuffer buffer = list.buffer;
       ByteData byteData = ByteData.view(buffer);
       addBook(byteData, urlFileName, '$urlHash');
-    }
-    else{
+    } else {
       log("bad url:$realUrl");
     }
   }
 
   addBook(ByteData data, String name, String hash) async {
-
     List<Map<String, String>> chapters = await FileParser.parseWithData(data);
     Book book = Book()
       ..bookID = hash

@@ -58,6 +58,7 @@ class ChapterContentManager with ChangeNotifier {
     });
     if (content == null || content.length == 0) {
       content = await Spider.getChapterContent(bookID, chapterID);
+      saveChapterContent(bookID, chapterID, content);
     }
     return content;
   }

@@ -81,16 +81,26 @@ class Spider {
         Uri.encodeQueryComponent(searchContent, encoding: codec);
     searchURL = searchURL.replaceAll(RegExp('#bookname#'), encodedContent);
     String decodeType = searchConfig['decodeType'] ?? "utf8";
-    Response rs = await Dio(BaseOptions(
-            responseDecoder: decodeType == 'gbk' ? gbkResponseDecoder : null))
-        .get(searchURL);
+    Response rs;
+    try {
+      rs = await Dio(BaseOptions(
+              connectTimeout: 5000,
+              receiveTimeout: 5000,
+              responseDecoder: decodeType == 'gbk' ? gbkResponseDecoder : null))
+          .get(searchURL);
+    } catch (e) {
+      print('search $searchContent in $configKey error:$e');
+      return null;
+    }
     var document = parse(rs.data);
+    var currentURL = searchURL;
+    try {
+      currentURL = rs.realUri.toString();
+    } catch (e) {
+      currentURL = searchURL;
+    }
     List<Map> models = handleSearchResultParse(
-        searchConfig,
-        document.documentElement,
-        rs.isRedirect ? (rs.realUri.toString() ?? searchURL) : searchURL,
-        rootURL,
-        configKey);
+        searchConfig, document.documentElement, currentURL, rootURL, configKey);
     // var resultElements =
     //     document.querySelectorAll(searchConfig['resultElements']);
     // Map elementParseConfig = searchConfig['elementParse'];
@@ -125,9 +135,17 @@ class Spider {
     }
     Map catalogConfig = config['catalog'];
     String decodeType = catalogConfig['decodeType'] ?? "utf8";
-    Response rs = await Dio(BaseOptions(
-            responseDecoder: decodeType == 'gbk' ? gbkResponseDecoder : null))
-        .get(chaptersURL);
+    Response rs;
+    try {
+      rs = await Dio(BaseOptions(
+              connectTimeout: 5000,
+              receiveTimeout: 5000,
+              responseDecoder: decodeType == 'gbk' ? gbkResponseDecoder : null))
+          .get(chaptersURL);
+    } catch (e) {
+      print('getChapters $chaptersURL error:$e');
+      return null;
+    }
     var document = parse(rs.data);
     var chapterElements =
         document.querySelectorAll(catalogConfig['chapterElements']);
@@ -179,11 +197,17 @@ class Spider {
     }
     Map chapterConfig = config['chapter'];
     String decodeType = chapterConfig['decodeType'] ?? "utf8";
-    Response rs = await Dio(BaseOptions(
-            connectTimeout: 5000,
-            receiveTimeout: 5000,
-            responseDecoder: decodeType == 'gbk' ? gbkResponseDecoder : null))
-        .get(url);
+    Response rs;
+    try {
+      rs = await Dio(BaseOptions(
+              connectTimeout: 5000,
+              receiveTimeout: 5000,
+              responseDecoder: decodeType == 'gbk' ? gbkResponseDecoder : null))
+          .get(url);
+    } catch (e) {
+      print('getChapterContent error:$e');
+      return null;
+    }
     var document = parse(rs.data);
     String content = getStrWithElementAndConfig(
         document.documentElement, chapterConfig['contentElement'], url);

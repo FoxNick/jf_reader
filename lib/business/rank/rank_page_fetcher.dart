@@ -7,12 +7,20 @@ import 'package:jf_reader/tools/decoder.dart';
 
 Future<RankPageModel> fetchRankPage() async {
   var url = 'http://top.baidu.com/category?c=10&fr=topindex';
-  Response rs = await Dio(BaseOptions(responseDecoder: gbkResponseDecoder)).get(
-      url,
-      options: Options(responseType: ResponseType.plain), //设置接收类型为bytes
-      onReceiveProgress: (received, total) {
-    // print('$received / $total');
-  });
+  Response rs;
+  try {
+    rs = await Dio(BaseOptions(
+      responseDecoder: gbkResponseDecoder,
+      connectTimeout: 5000,
+      receiveTimeout: 5000,
+    )).get(url,
+        options: Options(responseType: ResponseType.plain), //设置接收类型为bytes
+        onReceiveProgress: (received, total) {
+      // print('$received / $total');
+    });
+  } catch (e) {
+    print('fetchRankPage error:$e');
+  }
   String result = rs.data;
   return decodeRankPageHtml(result);
 }
