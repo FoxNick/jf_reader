@@ -11,7 +11,7 @@ Future<RankPageModel> fetchRankPage() async {
       url,
       options: Options(responseType: ResponseType.plain), //设置接收类型为bytes
       onReceiveProgress: (received, total) {
-    print('$received / $total');
+    // print('$received / $total');
   });
   String result = rs.data;
   return decodeRankPageHtml(result);

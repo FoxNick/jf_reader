@@ -8,7 +8,7 @@ import './rank_page_fetcher.dart';
 import './model/rank_page_model.dart';
 
 class RankPageState with ChangeNotifier {
-  RankPageState(){
+  RankPageState() {
     onRefresh();
   }
   RankPageModel rankPageModel = RankPageModel();
@@ -18,8 +18,9 @@ class RankPageState with ChangeNotifier {
         ? rankPageModel.rankCategoryModels.length
         : 0;
   }
+
   RankCategoryModel get currentCategoryModel {
-    if (rankPageModel.rankCategoryModels == null){
+    if (rankPageModel.rankCategoryModels == null) {
       return null;
     }
     if (selectedCategoryIndex >= rankPageModel.rankCategoryModels.length) {
@@ -27,6 +28,7 @@ class RankPageState with ChangeNotifier {
     }
     return rankPageModel.rankCategoryModels[selectedCategoryIndex];
   }
+
   int get currentCategoryBookCount {
     var model = currentCategoryModel;
     if (model != null) {
@@ -36,12 +38,13 @@ class RankPageState with ChangeNotifier {
   }
 
   onRefresh() async {
-    log('on refresh');
+    log('rank page on refresh');
     rankPageModel = await fetchRankPage();
     notifyListeners();
     return;
   }
-  setSelectedIdx(int newIndex){
+
+  setSelectedIdx(int newIndex) {
     selectedCategoryIndex = newIndex;
     notifyListeners();
   }

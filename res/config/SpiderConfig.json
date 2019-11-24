@@ -1,57 +1,72 @@
 {
-    "www.xbiquge.cc" : {
-        "rootURL":"https://www.xbiquge.cc/",
-        "search":{
-            "url":"https://www.xbiquge.cc/modules/article/search.php?searchkey=#bookname#",
-            "encodeType":"gbk",
-            "decodeType":"gbk",
-            "resultElements":"#main .novelslistss li",
-            "elementParse":{
+    "www.xbiquge.cc": {
+        "rootURL": "https://www.xbiquge.cc/",
+        "search": {
+            "url": "https://www.xbiquge.cc/modules/article/search.php?searchkey=#bookname#",
+            "encodeType": "gbk",
+            "decodeType": "gbk",
+            "resultElements": "#main .novelslistss li",
+            "elementParse": {
                 "name": {
                     "selector": ".s2 a",
                     "type": "inner"
                 },
                 "latest": {
-                    "selector":".s3 a",
+                    "selector": ".s3 a",
                     "type": "inner"
                 },
                 "author": {
-                    "selector":".s4",
+                    "selector": ".s4",
                     "type": "inner"
                 },
                 "catalogUrl": {
-                    "selector":".s2 a",
+                    "selector": ".s2 a",
                     "type": "attr",
                     "attrKey": "href"
                 }
             },
-            "notFound":{
-                "resultElements":"body",
-                "elementParse":{
+            "notFound": {
+                "resultElements": "body",
+                "elementParse": {
                     "name": {
                         "selector": "#info h1",
                         "type": "inner"
                     },
                     "latest": {
-                        "selector":"#info p:nth-last-of-type(1) a",
+                        "selector": "#info p:nth-child(5)>a",
                         "type": "inner"
                     },
                     "author": {
-                        "selector":"#info p a",
+                        "selector": "#info p a",
                         "type": "inner"
                     },
-                    "catalogUrl": "#currentUrl#"
+                    "catalogUrl": "#currentURL#"
                 }
             },
-            "errorMsg":"请30秒后再试"
+            "errorMsg": "请30秒后再试"
         },
-        "catalog":{
-            "chapterElements":"#list dd",
-            "chapterName":"a",
-            "chapterUrl":"a"
+        "catalog": {
+            "decodeType":"gbk",
+            "chapterElements": "#list dd",
+            "elementParse": {
+                "chapterName": {
+                    "selector": "a",
+                    "type": "inner"
+                },
+                "chapterUrl": {
+                    "selector": "a",
+                    "type": "attr",
+                    "attrKey": "href",
+                    "processResult":"#currentURL##result#"
+                }
+            }
         },
-        "chapter":{
-            "contentElement":"#content"
+        "chapter": {
+            "decodeType": "gbk",
+            "contentElement": {
+                "selector": "#content",
+                "type": "inner"
+            }
         }
     }
 }

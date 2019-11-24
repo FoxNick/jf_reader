@@ -8,7 +8,12 @@ import 'business/import/import_page.dart';
 import 'business/rank/rank_page.dart';
 import 'business/search/search_page.dart';
 
+void initData() {
+  ConfigManager();
+}
+
 void main() {
+  initData();
   return runApp(MultiProvider(
     providers: [
       ListenableProvider<BookShelfManager>.value(value: BookShelfManager()),
@@ -23,17 +28,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      title: '咕噜阅读器',
+      title: '咕噜小说',
       home: HomePage(),
       theme: CupertinoThemeData(
           brightness: Brightness.light,
-          scaffoldBackgroundColor: CupertinoColors.lightBackgroundGray
-      ),
+          scaffoldBackgroundColor: CupertinoColors.lightBackgroundGray),
       routes: <String, WidgetBuilder>{
         "/reading": (context) =>
             ReadingPage(ModalRoute.of(context).settings.arguments),
         "/import": (context) => ImportPage(),
-        "/search": (context) => SearchPage()
+        "/search": (context) =>
+            SearchPage(ModalRoute.of(context).settings.arguments)
       },
     );
   }

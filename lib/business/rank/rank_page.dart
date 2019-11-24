@@ -62,21 +62,27 @@ class BookRankListView extends StatelessWidget {
                   return Container(
                       height: 30,
                       margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: Row(
-                        children: <Widget>[
-                          Text(model.bookName),
-                          Expanded(child: Container()),
-                          Container(
-                              width: 70,
-                              alignment: Alignment.centerRight,
-                              child: Text(model.hot)),
-                          SizedBox(
-                            width: 10,
+                      child: GestureDetector(
+                          child: Row(
+                            children: <Widget>[
+                              Text(model.bookName),
+                              Expanded(child: Container()),
+                              Container(
+                                  width: 70,
+                                  alignment: Alignment.centerRight,
+                                  child: Text(model.hot)),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(CupertinoIcons.heart_solid,
+                                  color: Color(0xFFFF0000))
+                            ],
                           ),
-                          Icon(CupertinoIcons.heart_solid,
-                              color: Color(0xFFFF0000))
-                        ],
-                      ));
+                          onTapUp: (_) {
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed('/search',
+                                    arguments: model.bookName);
+                          }));
                 },
                 childCount: state.currentCategoryBookCount,
               ),

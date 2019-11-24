@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'package:jf_reader/base/base.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 import 'book.dart';
 import 'package:jf_reader/tools/file_parser.dart';
 import 'package:jf_reader/base/chapter/chapter.dart';
+import '../config/config_manager.dart';
+import '../spider/spider.dart';
 
 const BOOK_SHELF_KEY = "bookList";
 
@@ -38,15 +41,32 @@ class BookShelfManager with ChangeNotifier {
     return null;
   }
 
-  updateBook(String bookID, Book book) {
+  bool hasBook(String bookID) {
     int idx = bookList.indexWhere((Book book) => book.bookID == bookID);
-    if (idx >= 0 && book != null) {
+    if (idx >= 0) {
+      return true;
+    }
+    return false;
+  }
+
+  updateBook(String bookID, Book book) {
+    if (book == null) {
+      return;
+    }
+    int idx = bookList.indexWhere((Book book) => book.bookID == bookID);
+    if (idx >= 0) {
       bookList[idx] = book;
+    } else {
+      addBook(book);
     }
   }
 
   addBook(Book book) {
-    bookList.add(book);
+    if (hasBook(book.bookID)) {
+      updateBook(book.bookID, book);
+    } else {
+      bookList.add(book);
+    }
     notifyListeners();
     saveData();
   }
@@ -114,5 +134,42 @@ class BookShelfManager with ChangeNotifier {
         .toList();
     book.chapters = chapterList;
     addBook(book);
+  }
+
+  updateChaptersAndAddBook(Book book) async {
+    if (book.bookType == BookType.NetworkBook && book.configKey != null) {
+      List<Map> chapters =
+          await Spider.getChapters(book.configKey, book.chaptersURL);
+      List<ChapterModel> chapterModels = List();
+      for (Map chapter in chapters) {
+        ChapterModel chapterModel = ChapterModel()
+          ..name = chapter["chapterName"]
+          ..chapterID = chapter["chapterUrl"]
+          ..chapterUrl = chapter["chapterUrl"]
+          ..bookID = book.bookID;
+        chapterModels.add(chapterModel);
+        print('book ${book.bookName} add chapter ${chapterModel.name}');
+      }
+      if (chapterModels.length > 0) {
+        book.currentChapterID = chapterModels.first.chapterID;
+        book.currentChapterName = chapterModels.first.name;
+        book.latestChapterID = chapterModels.last.chapterID;
+        book.latestChapterName = chapterModels.last.name;
+      }
+
+      if (chapterModels.length > 0) {
+        book.chapters = chapterModels;
+        Future(() async {
+          for (ChapterModel chapter in book.chapters) {
+            try {
+              await ChapterContentManager()
+                  .readChapterContent(book.bookID, chapter.chapterID);
+            } catch (e) {}
+          }
+        });
+      }
+      addBook(book);
+      notifyListeners();
+    }
   }
 }
