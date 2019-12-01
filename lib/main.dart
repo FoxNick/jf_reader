@@ -28,19 +28,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      title: '咕噜小说',
-      home: HomePage(),
-      theme: CupertinoThemeData(
-          brightness: Brightness.light,
-          scaffoldBackgroundColor: CupertinoColors.lightBackgroundGray),
-      routes: <String, WidgetBuilder>{
-        "/reading": (context) =>
-            ReadingPage(ModalRoute.of(context).settings.arguments),
-        "/import": (context) => ImportPage(),
-        "/search": (context) =>
-            SearchPage(ModalRoute.of(context).settings.arguments)
-      },
-    );
+        title: '咕噜小说',
+        home: HomePage(),
+        theme: CupertinoThemeData(
+            brightness: Brightness.light,
+            scaffoldBackgroundColor: CupertinoColors.lightBackgroundGray),
+        // routes: <String, WidgetBuilder>{
+        //   "/reading": (context) => CupertinoPageRoute(
+        //       builder: (_) =>
+        //           ReadingPage(ModalRoute.of(context).settings.arguments)),
+        //   "/import": (context) => ImportPage(),
+        //   "/search": (context) =>
+        //       SearchPage(ModalRoute.of(context).settings.arguments)
+        // },
+        onGenerateRoute: (RouteSettings settings) {
+          WidgetBuilder builder;
+          switch (settings.name) {
+            case "/reading":
+              builder = (_) => ReadingPage(settings.arguments);
+              // builder = (_) => CupertinoPageScaffold(
+              //       navigationBar: CupertinoNavigationBar(),
+              //       child: Container(color: CupertinoColors.white),
+              //     );
+              break;
+            case "/import":
+              builder = (context) => ImportPage();
+              break;
+            case "/search":
+              builder = (context) => SearchPage(settings.arguments);
+          }
+          return CupertinoPageRoute(builder: builder, settings: settings);
+        });
   }
 }
 

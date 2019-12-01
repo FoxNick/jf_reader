@@ -24,10 +24,7 @@ class ReadPageState with ChangeNotifier {
   String bookID;
   String chapterID;
   String currentContent;
-  Book get currentBook {
-    Book book = BookShelfManager().getBook(bookID);
-    return book;
-  }
+  Book currentBook;
 
   ChapterModel currentChapter;
   List<ContentOffset> currentPageOffsets;
@@ -42,6 +39,7 @@ class ReadPageState with ChangeNotifier {
     setup(context);
   }
   setup(BuildContext context) async {
+    currentBook = BookShelfManager().getBook(bookID);
     topSafeHeight = Screen.topSafeHeight;
     bottomSafeHeight = Screen.bottomSafeHeight;
     await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -68,6 +66,14 @@ class ReadPageState with ChangeNotifier {
     Book book = BookShelfManager().getBook(bookID);
     currentChapter = book.getChapter(chapterID);
     currentContent = await currentChapter.getContent();
+    ChapterModel pre = this.previousChapter;
+    ChapterModel next = this.nextChapter;
+    if (pre != null) {
+      pre.getContent();
+    }
+    if (next != null) {
+      next.getContent();
+    }
     var contentHeight = Screen.height -
         topSafeHeight -
         topOffset -
@@ -88,13 +94,11 @@ class ReadPageState with ChangeNotifier {
   }
 
   ChapterModel get nextChapter {
-    Book book = BookShelfManager().getBook(bookID);
-    return book.nextChapter(chapterID);
+    return currentBook.nextChapter(chapterID);
   }
 
   ChapterModel get previousChapter {
-    Book book = BookShelfManager().getBook(bookID);
-    return book.previousChapter(chapterID);
+    return currentBook.previousChapter(chapterID);
   }
 
   // 页面点击

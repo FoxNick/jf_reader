@@ -48,18 +48,27 @@ class ChapterContentManager with ChangeNotifier {
     String content =
         await chaptersCache.get("$bookID\_$chapterID", ifAbsent: (key) async {
       String dir = (await getApplicationDocumentsDirectory()).path;
-      try {
-        File chapterFile = new File('$dir/$bookID/$chapterID');
-        String contents = await chapterFile.readAsString();
-        return contents;
-      } catch (e) {
-        return '';
-      }
+      String path = '$dir/$bookID/$chapterID';
+      return await readLocalFileAsync(path);
     });
     if (content == null || content.length == 0) {
       content = await Spider.getChapterContent(bookID, chapterID);
       saveChapterContent(bookID, chapterID, content);
     }
     return content;
+  }
+}
+
+Future<String> readLocalFileAsync(String path) async {
+  return await compute(readLocalFile, path);
+}
+
+Future<String> readLocalFile(String path) async {
+  try {
+    File chapterFile = new File(path);
+    String contents = await chapterFile.readAsString();
+    return contents;
+  } catch (e) {
+    return '';
   }
 }

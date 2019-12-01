@@ -30,13 +30,12 @@ class BookShelfManager with ChangeNotifier {
 
   List<Book> bookList = [];
   SharedPreferences _prefs;
-  // 深拷贝
+
+  /// 深拷贝太慢...还是返回引用吧
   getBook(String bookID) {
     int idx = bookList.indexWhere((Book book) => book.bookID == bookID);
-    Book localBook;
     if (idx >= 0) {
-      localBook = bookList[idx];
-      return Book.fromJson(jsonDecode(jsonEncode(localBook)));
+      return bookList[idx];
     }
     return null;
   }
@@ -81,7 +80,15 @@ class BookShelfManager with ChangeNotifier {
       // generateTestData();
       readTestData();
     }
+    preloadChapters();
     notifyListeners();
+  }
+
+  preloadChapters() {
+    for (Book book in bookList) {
+      ChapterModel chapter = book.getChapter(book.currentChapterID);
+      chapter.getContent();
+    }
   }
 
   saveData() {

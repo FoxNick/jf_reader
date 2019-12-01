@@ -13,7 +13,10 @@ class ReadContentView extends StatelessWidget {
   Widget build(BuildContext context) {
     ReadPageState state = Provider.of<ReadPageState>(context);
     if (state.isLoading) {
-      return Container();
+      return GestureDetector(
+          onTapUp: state.onTap,
+          behavior: HitTestBehavior.translucent,
+          child: Container());
     }
     var format = DateFormat('HH:mm');
     var time = format.format(DateTime.now());
@@ -26,28 +29,29 @@ class ReadContentView extends StatelessWidget {
     if (next != null) {
       pages += 1;
     }
-    return Container(
-      child: PageView.builder(
-        physics: BouncingScrollPhysics(),
-        controller: state.pageController,
-        itemCount: pages, // 上一章一页，当前章每页，下一章一页
-        itemBuilder: (BuildContext context, int index) {
-          var page = 0;
-          String content = '';
-          if (pre != null && index == 0) {
-            content = pre.name;
-          } else if (index == pages - 1 && next != null) {
-            content = next.name;
-          } else {
-            page = index + 1 - (pre != null ? 1 : 0);
-            ContentOffset offset = state.currentPageOffsets[page - 1];
-            content = state.currentContent.substring(offset.start, offset.end);
-          }
+    return GestureDetector(
+        onTapUp: state.onTap,
+        behavior: HitTestBehavior.translucent,
+        child: Container(
+          child: PageView.builder(
+            physics: BouncingScrollPhysics(),
+            controller: state.pageController,
+            itemCount: pages, // 上一章一页，当前章每页，下一章一页
+            itemBuilder: (BuildContext context, int index) {
+              var page = 0;
+              String content = '';
+              if (pre != null && index == 0) {
+                content = pre.name;
+              } else if (index == pages - 1 && next != null) {
+                content = next.name;
+              } else {
+                page = index + 1 - (pre != null ? 1 : 0);
+                ContentOffset offset = state.currentPageOffsets[page - 1];
+                content =
+                    state.currentContent.substring(offset.start, offset.end);
+              }
 
-          return GestureDetector(
-              onTapUp: state.onTap,
-              behavior: HitTestBehavior.translucent,
-              child: Container(
+              return Container(
                 padding: EdgeInsets.fromLTRB(
                     15, state.topSafeHeight, 15, state.bottomSafeHeight),
                 child: Column(
@@ -84,10 +88,10 @@ class ReadContentView extends StatelessWidget {
                     ),
                   ],
                 ),
-              ));
-        },
-        // onPageChanged: state.onPageChanged,
-      ),
-    );
+              );
+            },
+            // onPageChanged: state.onPageChanged,
+          ),
+        ));
   }
 }
